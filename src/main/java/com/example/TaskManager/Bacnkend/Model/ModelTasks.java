@@ -43,7 +43,7 @@ public class ModelTasks {
 
     @Column(name="description")
     @NotBlank(message="Description cannot be empty.")
-    private String Description;
+    private String description;
     
     @Column(name="date_created",updatable=false)
     @CreationTimestamp
@@ -53,11 +53,11 @@ public class ModelTasks {
     @Column(name="Priority")
     @Enumerated(EnumType.STRING)
     
-    private Priority TaskPriority=Priority.MIDEIUM;
+    private Priority taskPriority=Priority.MEDIUM;
 
     @Column(name="Status")
     @Enumerated(EnumType.STRING)
-    private Status TaskStatus=Status.IN_PROGRESS;
+    private Status taskStatus=Status.IN_PROGRESS;
 
 
 
