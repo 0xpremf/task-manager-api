@@ -25,6 +25,7 @@ import lombok.Setter;
 @Data
 @Entity
 @Getter
+
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,8 +41,9 @@ public class ModelTasks {
     @NotBlank(message="Title cannot be empty")
     private String title;
 
-    @Column(name="description", nullable=false)
-    private String description;
+    @Column(name="description")
+    @NotBlank(message="Description cannot be empty.")
+    private String Description;
     
     @Column(name="date_created",updatable=false)
     @CreationTimestamp
@@ -51,11 +53,14 @@ public class ModelTasks {
     @Column(name="Priority")
     @Enumerated(EnumType.STRING)
     
-    private Priority taskPriority=Priority.MIDEIUM;
+    private Priority TaskPriority=Priority.MIDEIUM;
 
     @Column(name="Status")
     @Enumerated(EnumType.STRING)
-    private Status taskStatus=Status.IN_PROGRESS;
+    private Status TaskStatus=Status.IN_PROGRESS;
+
+
+
 }
 
 
