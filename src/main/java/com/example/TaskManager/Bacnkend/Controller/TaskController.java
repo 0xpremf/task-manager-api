@@ -34,7 +34,7 @@ public class TaskController {
     @ResponseStatus(code=HttpStatus.CREATED)
     public void addTasks(@RequestBody TaskRequest taskRequest){
         
-        service.addTasks( taskRequest);
+        service.addTasks(taskRequest);
     }
 
     @GetMapping("/hello")
