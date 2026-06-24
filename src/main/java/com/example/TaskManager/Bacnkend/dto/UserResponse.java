@@ -1,5 +1,5 @@
 package com.example.TaskManager.Bacnkend.dto;
 
-public class DtoResponse {
+public class UserResponse {
 
 }

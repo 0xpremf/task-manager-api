@@ -14,7 +14,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -25,7 +24,6 @@ import lombok.Setter;
 @Data
 @Entity
 @Getter
-
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,11 +36,11 @@ public class ModelTasks {
     
     
     @Column(name="title")
-    @NotBlank(message="Title cannot be empty")
+   
     private String title;
 
     @Column(name="description")
-    @NotBlank(message="Description cannot be empty.")
+   
     private String description;
     
     @Column(name="date_created",updatable=false)

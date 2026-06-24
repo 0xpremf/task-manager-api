@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.TaskManager.Bacnkend.Model.ModelTasks;
+import com.example.TaskManager.Bacnkend.dto.TaskRequest;
+import com.example.TaskManager.Bacnkend.dto.TaskResponse;
 import com.example.TaskManager.Bacnkend.exception.TaskNotFoundException;
 import com.example.TaskManager.Bacnkend.repo.TaskRepo;
 
@@ -19,8 +21,15 @@ public class TaskService {
     @Autowired
     private TaskRepo repo;
 
-    public void addTasks(ModelTasks tasks){
-        repo.save(tasks);
+    
+
+
+
+    public void addTasks(TaskRequest taskRequest){
+        ModelTasks modelTasks=new ModelTasks();    
+        modelTasks.setTitle(taskRequest.getTitle());
+        modelTasks.setDescription(taskRequest.getDescription());
+        repo.save(modelTasks);
     }
 
     public List<ModelTasks> seeallTasks(){
@@ -28,9 +37,11 @@ public class TaskService {
     }
 
     
-    public ModelTasks getTasks(int id){
-        return repo.findById(id)
-        .orElseThrow(()-> new TaskNotFoundException("Task with id "+id+" not found"));
+    public TaskResponse getTasks(int id){
+        
+        
+        ModelTasks modeltasks=repo.findById(id).orElseThrow(()-> new TaskNotFoundException("Task with id "+id+" not found"));
+        return convEntitytoResponse(modeltasks);
     }
 
 
@@ -61,7 +72,22 @@ public class TaskService {
     }
 
 
-    public Page<ModelTasks> getpageTasks(Pageable pageable){
-        return repo.findAll(pageable);
+    public Page<TaskResponse> getpageTasks(Pageable pageable){
+        Page<ModelTasks> page = repo.findAll(pageable);
+       return page.map(tasks->convEntitytoResponse(tasks));
+    }
+
+
+
+    public TaskResponse convEntitytoResponse(ModelTasks tasks){
+        TaskResponse taskResponse = new TaskResponse();
+
+        taskResponse.setTitle(tasks.getTitle());
+        taskResponse.setDateCreated(tasks.getDateCreated());
+        taskResponse.setDescription(tasks.getDescription());
+        taskResponse.setId(tasks.getId());
+        taskResponse.setTaskPriority(tasks.getTaskPriority());
+        taskResponse.setTaskStatus(tasks.getTaskStatus());
+        return taskResponse;
     }
 }
