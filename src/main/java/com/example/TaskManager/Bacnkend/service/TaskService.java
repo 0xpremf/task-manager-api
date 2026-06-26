@@ -2,6 +2,9 @@ package com.example.TaskManager.Bacnkend.service;
 
 import java.util.List;
 
+import com.example.TaskManager.Bacnkend.Model.ModelUser;
+import com.example.TaskManager.Bacnkend.repo.UserRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +18,15 @@ import com.example.TaskManager.Bacnkend.dto.TaskResponse;
 import com.example.TaskManager.Bacnkend.exception.TaskNotFoundException;
 import com.example.TaskManager.Bacnkend.repo.TaskRepo;
 
+import javax.management.RuntimeErrorException;
+
 @Service
 public class TaskService {
 
     @Autowired
     private TaskRepo repo;
 
-    
+
 
 
 
@@ -74,7 +79,7 @@ public class TaskService {
 
     public Page<TaskResponse> getpageTasks(Pageable pageable){
         Page<ModelTasks> page = repo.findAll(pageable);
-       return page.map(tasks->convEntitytoResponse(tasks));
+       return page.map(this::convEntitytoResponse);
     }
 
 
@@ -90,4 +95,7 @@ public class TaskService {
         taskResponse.setTaskStatus(tasks.getTaskStatus());
         return taskResponse;
     }
+
+
+
 }
