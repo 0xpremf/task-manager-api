@@ -20,6 +20,7 @@ import com.example.TaskManager.Bacnkend.dto.UserResponse;
 import com.example.TaskManager.Bacnkend.repo.UserRepo;
 
 import javax.management.RuntimeErrorException;
+import java.util.List;
 
 
 @Service
@@ -60,7 +61,7 @@ public class UserService {
     public void createTaskbyUser(int id, TaskRequest taskRequest) {
         ModelUser user = userRepo.findById(id).
                 orElseThrow(
-                        () -> new RuntimeErrorException(new Error("User Not found"))
+                        () -> new UserNotFoundExceptionHandler("User not found")
                 );
 
         ModelTasks modelTasks = mapper.map(taskRequest,ModelTasks.class);
@@ -78,4 +79,39 @@ public class UserService {
 
         return page.map(modelTasks -> mapper.map(modelTasks,TaskResponse.class));
     }
+
+    public TaskResponse updateTaskByUserid(int userId, int taskId, TaskRequest taskRequest) {
+        ModelUser user = userRepo.findById(userId).orElseThrow(()-> new UserNotFoundExceptionHandler("User not found"));
+        ModelTasks tasks = user.getTasks()
+                                .stream()
+                                .filter(task -> task.getId() == taskId)
+                                .findFirst()
+                                .orElseThrow(
+                                            ()->new RuntimeErrorException(new Error("Task not found"))
+                                );
+
+
+        if (taskRequest.getTitle() != null) {
+            assert tasks != null;
+            tasks.setTitle(taskRequest.getTitle());
+        }
+        if (taskRequest.getDescription() != null) {
+            assert tasks != null;
+            tasks.setDescription(taskRequest.getDescription());
+        }
+        if(taskRequest.getTaskPriority() != null) {
+            assert tasks != null;
+            tasks.setTaskPriority(taskRequest.getTaskPriority());
+        }
+        if(taskRequest.getTaskStatus() != null) {
+            assert tasks != null;
+            tasks.setTaskStatus(taskRequest.getTaskStatus());
+        }
+        assert tasks != null;
+        taskRepo.save(tasks);
+        return mapper.map(tasks, TaskResponse.class);
+
+    }
+
+
 }

@@ -14,7 +14,7 @@ import com.example.TaskManager.Bacnkend.dto.UserRequest;
 import com.example.TaskManager.Bacnkend.dto.UserResponse;
 import com.example.TaskManager.Bacnkend.service.UserService;
 
-
+import java.util.List;
 
 
 @RestController
@@ -47,6 +47,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void  deleteUser(@PathVariable int id){
         userService. deleteUser(id);
+    }
+
+
+    @PatchMapping ("/{user_id}/tasks/{task_id}")
+    public TaskResponse updateTaskByUserid(@PathVariable int user_id, @PathVariable int task_id,@RequestBody TaskRequest taskRequest){
+        return userService.updateTaskByUserid( user_id, task_id, taskRequest);
     }
 
     @PostMapping("/{id}/tasks")
